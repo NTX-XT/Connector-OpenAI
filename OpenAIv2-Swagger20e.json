@@ -1,0 +1,325 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "OpenAIv2",
+    "description": "OpenAI Chat-GPT and Dall-E API"
+  },
+  "host": "api.openai.com",
+  "basePath": "/v1",
+  "securityDefinitions": {
+    "api_key": {
+			"type": "apiKey",
+			"in": "header",
+			"name": "Authorization"
+		}
+  },
+  "schemes": [
+    "https"
+  ],
+  "x-ntx-render-version": 2,
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/images/generations": {
+      "post": {
+        "description": "Creates an image given a prompt.",
+        "summary": "Create image",
+        "x-ntx-summary": "A.I. Generate Image",
+        "security": [
+					{
+						"api_key": []
+					}
+				],
+        "tags": [
+          "Images"
+        ],
+        "operationId": "Createimage",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "x-ntx-summary": "Create image parameters",
+            "schema": {
+              "$ref": "#/definitions/CreateimageRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Createimage"
+            }
+          }
+        }
+      }
+    },
+    "/chat/completions": {
+      "post": {
+        "summary": "Create Chat Completion",
+        "x-ntx-summary": "A.I. Prompt",
+        "security": [
+					{
+						"api_key": []
+					}
+				],
+        "tags": [
+          "Chat"
+        ],
+        "operationId": "CreateChatCompletion",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "x-ntx-summary": "Chat parameters",
+            "schema": {
+              "$ref": "#/definitions/CreateChatCompletionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CreateChatCompletion"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreateimageRequest": {
+      "title": "CreateimageRequest",
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "x-ntx-initial": "dall-e-3",
+          "x-ntx-visibility": "internal"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "n": {
+          "type": "integer",
+          "format": "int32",
+          "x-ntx-initial": 1,
+          "x-ntx-visibility": "internal"
+        },
+        "size": {
+          "type": "string",
+          "enum": [
+            "1024x1024",
+            "1792x1024",
+            "1024x1792"
+          ],
+          "x-ntx-initial": "1024x1024"
+        },
+        "style": {
+          "type": "string",
+          "enum": [
+            "natural",
+            "vivid"
+          ],
+          "x-ntx-initial": "natural"
+        },
+        "response_format": {
+          "type": "string",
+          "enum": [
+            "url",
+            "b64_json"
+          ],
+          "x-ntx-initial": "url"
+        },
+        "quality": {
+          "type": "string",
+          "enum": [
+            "standard",
+            "hd"
+          ],
+          "x-ntx-initial": "standard"
+        }
+      },
+      "required": [
+        "prompt",
+        "size",
+        "style",
+        "quality"
+      ]
+    },
+    "Createimage": {
+      "title": "Createimage",
+      "type": "object",
+      "properties": {
+        "created": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Datum"
+          }
+        }
+      }
+    },
+    "Datum": {
+      "title": "Datum",
+      "type": "object",
+      "properties": {
+        "revised_prompt": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateChatCompletionRequest": {
+      "title": "CreateChatCompletionRequest",
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "enum": [
+            "gpt-4",
+            "gpt-3.5-turbo"
+          ],
+          "x-ntx-initial": "gpt-4"
+        },
+        "temperature": {
+          "type": "number",
+          "format": "double",
+          "x-ntx-initial": 0.9
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Message"
+          }
+          ,"x-ntx-initial": [{
+            "role": "system",
+            "content": "You are a helpful assistant"
+          },
+          {
+            "role": "user",
+            "content": ""
+          }]    
+        }
+      }
+    },
+    "Message": {
+      "title": "Message",
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "system",
+            "user"
+          ],
+          "x-ntx-initial": "user"
+        },
+        "content": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "content"
+      ]
+    },
+    "CreateChatCompletion": {
+      "title": "CreateChatCompletion",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "object": {
+          "type": "string"
+        },
+        "created": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "model": {
+          "type": "string"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Choice"
+          }
+        },
+        "usage": {
+          "$ref": "#/definitions/Usage"
+        },
+        "system_fingerprint": {
+          "type": "string"
+        }
+      }
+    },
+    "Choice": {
+      "title": "Choice",
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/Message"
+        },
+        "logprobs": {
+          "type": "string"
+        },
+        "finish_reason": {
+          "type": "string"
+        }
+      }
+    },
+    "Usage": {
+      "title": "Usage",
+      "type": "object",
+      "properties": {
+        "prompt_tokens": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "completion_tokens": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_tokens": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  },
+  "security": [],
+  "tags": [
+    {
+      "name": "Images",
+      "description": "Given a prompt and/or an input image, the model will generate a new image."
+    },
+    {
+      "name": "Chat"
+    }
+  ]
+}
