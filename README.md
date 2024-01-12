@@ -19,9 +19,13 @@
 
 ## Reduction in Number of Actions
 - **Simplified Interface**: Reduce the number of actions to two, reducing clutter.
+![Less Actions](img/thumbnail_image006.jpg)
 
 ## Updated Instructions for API Key
 - **New API Key URLs**:
   - [OpenAI Beta API Keys](https://beta.openai.com/account/api-keys)
   - [OpenAI Platform API Keys](https://platform.openai.com/api-keys)
 
+## Screenshots
+![Alt](img/thumbnail_image007.jpg)
+![Alt](img/thumbnail_image008.jpg)
